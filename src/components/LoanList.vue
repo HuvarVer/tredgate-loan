@@ -105,14 +105,13 @@ function formatDate(isoDate: string): string {
 
 <style scoped>
 .loan-list {
-  flex: 1;
+  width: 100%;
   min-width: 0;
-  overflow-x: auto;
 }
 
 .empty-state {
   text-align: center;
-  padding: 2rem;
+  padding: 3rem 2rem;
   color: var(--text-secondary);
 }
 
@@ -125,9 +124,10 @@ function formatDate(isoDate: string): string {
 }
 
 .action-btn {
-  padding: 0.25rem 0.5rem;
+  padding: 0.4rem 0.6rem;
   font-size: 0.875rem;
   margin-right: 0.25rem;
+  min-width: 32px;
 }
 
 .action-btn:last-child {

@@ -3,17 +3,17 @@
 :root {
   --primary-color: #2E3192;
   --primary-hover: #1f2270;
-  --background-color: #336;
+  --background-color: #f5f7fa;
   --card-background: #ffffff;
   --text-color: #333333;
   --text-secondary: #666666;
-  --header-text-color: #ffffff;
-  --tagline-color: rgba(255, 255, 255, 0.8);
+  --header-text-color: #2E3192;
+  --tagline-color: #666666;
   --border-color: #e0e0e0;
   --success-color: #28a745;
   --danger-color: #dc3545;
   --warning-color: #ffc107;
-  --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   --border-radius: 8px;
 }
 
@@ -32,9 +32,9 @@ body {
 }
 
 #app {
-  max-width: 1400px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 2rem 1.5rem;
 }
 
 h1, h2, h3 {
@@ -61,6 +61,7 @@ h3 {
   border-radius: var(--border-radius);
   box-shadow: var(--shadow);
   padding: 1.5rem;
+  border: 1px solid var(--border-color);
 }
 
 /* Form elements */

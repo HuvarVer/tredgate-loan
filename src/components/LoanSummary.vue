@@ -62,13 +62,13 @@ function formatCurrency(value: number): string {
   display: flex;
   gap: 1rem;
   flex-wrap: wrap;
-  margin-bottom: 1.5rem;
 }
 
 .stat-card {
   background-color: var(--card-background);
   border-radius: var(--border-radius);
   box-shadow: var(--shadow);
+  border: 1px solid var(--border-color);
   padding: 1rem 1.5rem;
   text-align: center;
   min-width: 120px;
