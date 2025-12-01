@@ -61,10 +61,12 @@ jobs:
           fi
           
           # Extract test statistics from JSON with error handling
-          TOTAL_TESTS=$(jq -r '.numTotalTests // 0' test-results.json 2>/dev/null || echo "0")
-          PASSED_TESTS=$(jq -r '.numPassedTests // 0' test-results.json 2>/dev/null || echo "0")
-          FAILED_TESTS=$(jq -r '.numFailedTests // 0' test-results.json 2>/dev/null || echo "0")
-          PENDING_TESTS=$(jq -r '.numPendingTests // 0' test-results.json 2>/dev/null || echo "0")
+          for pair in "TOTAL_TESTS:numTotalTests" "PASSED_TESTS:numPassedTests" "FAILED_TESTS:numFailedTests" "PENDING_TESTS:numPendingTests"; do
+            VAR="${pair%%:*}"
+            PROP="${pair##*:}"
+            VALUE=$(jq -r ".${PROP} // 0" test-results.json 2>/dev/null || echo "0")
+            eval "$VAR=\$VALUE"
+          done
           
           # Calculate pass rate
           if [ "$TOTAL_TESTS" -gt 0 ]; then
