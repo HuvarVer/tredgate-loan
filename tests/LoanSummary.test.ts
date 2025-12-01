@@ -112,7 +112,7 @@ describe('LoanSummary.vue', () => {
 
     const statCards = wrapper.findAll('.stat-card')
     const amountCard = statCards[4]
-    // Sum of approved loans: 100000 + 75000 = 175000
+    // Only approved loans: 100000 + 75000 = 175000
     expect(amountCard?.find('.stat-value').text()).toBe('$175,000')
     expect(amountCard?.find('.stat-label').text()).toBe('Total Approved')
   })
