@@ -53,8 +53,13 @@ npm run build
 ### Testing
 
 ```bash
-npm run test
+npm run test              # Run all tests
+npm run test:watch        # Run tests in watch mode
+npm run test:coverage     # Run tests with coverage report
+npm run test:report       # Generate HTML test report
 ```
+
+For detailed testing information, see [TESTING.md](TESTING.md).
 
 ### Linting
 

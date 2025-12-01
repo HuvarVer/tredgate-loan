@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: read
+  pull-requests: write
 
 jobs:
   build-and-test:
@@ -29,8 +30,76 @@ jobs:
       - name: Run linter
         run: npm run lint
 
-      - name: Run tests
-        run: npm run test
+      - name: Run tests with coverage
+        run: npm run test:coverage
+
+      - name: Generate HTML test report
+        if: always()
+        run: npm run test:report
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: |
+            test-results.html
+            test-results.json
+            coverage/
+          retention-days: 30
+
+      - name: Create test summary
+        if: always()
+        run: |
+          echo "## 🧪 Test Results Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # Check if test results file exists
+          if [ ! -f "test-results.json" ]; then
+            echo "⚠️ Test results file not found" >> $GITHUB_STEP_SUMMARY
+            exit 0
+          fi
+          
+          # Extract test statistics from JSON with error handling
+          for pair in "TOTAL_TESTS:numTotalTests" "PASSED_TESTS:numPassedTests" "FAILED_TESTS:numFailedTests" "PENDING_TESTS:numPendingTests"; do
+            VAR="${pair%%:*}"
+            PROP="${pair##*:}"
+            VALUE=$(jq -r ".${PROP} // 0" test-results.json 2>/dev/null || echo "0")
+            eval "$VAR=\$VALUE"
+          done
+          
+          # Calculate pass rate
+          if [ "$TOTAL_TESTS" -gt 0 ]; then
+            PASS_RATE=$(awk "BEGIN {printf \"%.2f\", ($PASSED_TESTS/$TOTAL_TESTS)*100}")
+          else
+            PASS_RATE="0.00"
+          fi
+          
+          # Determine status emoji
+          if [ "$FAILED_TESTS" -eq 0 ]; then
+            STATUS_EMOJI="✅"
+          else
+            STATUS_EMOJI="❌"
+          fi
+          
+          # Create summary table
+          echo "| Metric | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "|--------|-------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Status | $STATUS_EMOJI |" >> $GITHUB_STEP_SUMMARY
+          echo "| Total Tests | $TOTAL_TESTS |" >> $GITHUB_STEP_SUMMARY
+          echo "| ✅ Passed | $PASSED_TESTS |" >> $GITHUB_STEP_SUMMARY
+          echo "| ❌ Failed | $FAILED_TESTS |" >> $GITHUB_STEP_SUMMARY
+          echo "| ⏭️ Skipped | $PENDING_TESTS |" >> $GITHUB_STEP_SUMMARY
+          echo "| 📊 Pass Rate | ${PASS_RATE}% |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "📄 **Detailed test report available in workflow artifacts**" >> $GITHUB_STEP_SUMMARY
 
       - name: Build
         run: npm run build
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-output
+          path: dist/
+          retention-days: 7
