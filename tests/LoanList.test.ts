@@ -276,7 +276,8 @@ describe('LoanList.vue', () => {
       props: { loans: [testLoan] }
     })
 
-    // 12000 * 1.0 / 12 = 1000
+    // For zero interest rate, monthly payment = principal / term = 12000 / 12 = 1000.
+    // For nonzero interest rates, the application uses the standard loan amortization formula.
     expect(wrapper.text()).toContain('$1,000.00')
   })
 
