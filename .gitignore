@@ -16,6 +16,7 @@ dist-ssr
 coverage
 test-results.json
 test-results.html
+html
 
 # Editor directories and files
 .vscode/*
