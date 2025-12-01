@@ -40,16 +40,19 @@ onMounted(() => {
       <p class="tagline">Simple loan application management</p>
     </header>
 
-    <LoanSummary :loans="loans" />
-
     <main class="main-content">
-      <LoanForm @created="refreshLoans" />
-      <LoanList
-        :loans="loans"
-        @approve="handleApprove"
-        @reject="handleReject"
-        @auto-decide="handleAutoDecide"
-      />
+      <div class="left-column">
+        <LoanForm @created="refreshLoans" />
+      </div>
+      <div class="right-column">
+        <LoanSummary :loans="loans" />
+        <LoanList
+          :loans="loans"
+          @approve="handleApprove"
+          @reject="handleReject"
+          @auto-decide="handleAutoDecide"
+        />
+      </div>
     </main>
   </div>
 </template>
@@ -61,7 +64,8 @@ onMounted(() => {
 
 .app-header {
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
+  padding-bottom: 1.5rem;
 }
 
 .logo {
@@ -73,6 +77,7 @@ onMounted(() => {
 .tagline {
   color: var(--tagline-color);
   margin-top: -0.5rem;
+  font-size: 1.1rem;
 }
 
 .main-content {
@@ -81,13 +86,30 @@ onMounted(() => {
   align-items: flex-start;
 }
 
+.left-column {
+  flex: 0 0 380px;
+}
+
+.right-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  min-width: 0;
+}
+
 @media (max-width: 900px) {
   .main-content {
     flex-direction: column;
   }
 
-  .main-content > :first-child {
-    max-width: 100%;
+  .left-column {
+    flex: 1;
+    width: 100%;
+    max-width: 500px;
+  }
+
+  .right-column {
     width: 100%;
   }
 }
