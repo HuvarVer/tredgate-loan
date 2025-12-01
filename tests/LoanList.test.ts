@@ -64,15 +64,17 @@ describe('LoanList.vue', () => {
       props: { loans: mockLoans }
     })
 
-    const headers = wrapper.findAll('th')
-    expect(headers[0]?.text()).toBe('Applicant')
-    expect(headers[1]?.text()).toBe('Amount')
-    expect(headers[2]?.text()).toBe('Term')
-    expect(headers[3]?.text()).toBe('Rate')
-    expect(headers[4]?.text()).toBe('Monthly Payment')
-    expect(headers[5]?.text()).toBe('Status')
-    expect(headers[6]?.text()).toBe('Created')
-    expect(headers[7]?.text()).toBe('Actions')
+    const headerTexts = wrapper.findAll('th').map(h => h.text())
+    expect(headerTexts).toEqual([
+      'Applicant',
+      'Amount',
+      'Term',
+      'Rate',
+      'Monthly Payment',
+      'Status',
+      'Created',
+      'Actions'
+    ])
   })
 
   it('displays all loans in the table', () => {
